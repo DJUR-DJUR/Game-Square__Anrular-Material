@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
   public startGame(): void {
     this.isStarted = true;
     this.gameSpeed.disable();
+    this.randomSquare = this.getRandomNumber(0, this.squares.length - 1);
     this.gameInterval = setInterval(() => {
       if (this.randomSquare) {
         this.expiredSquares.push(this.randomSquare);
