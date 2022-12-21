@@ -10,5 +10,33 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  max-width: 220px;
+  max-width: 340px;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    color: #16d9e3;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    cursor: default;
+    opacity: 0.6;
+  }
+}
+
+.start {
+  font-size: 2rem;
+  margin-bottom: 1rem;
 }

@@ -1,5 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { SQUARE_STATUS } from './constants';
+import { ScoreComponent } from './score/score.component';
 
 @Component({
   selector: 'app-root',
@@ -10,21 +12,24 @@ import { SQUARE_STATUS } from './constants';
 export class AppComponent implements OnInit {
 
   public squares = new Array(100);
-  private randomSquare: number | null = null;
   public isStarted = false;
+  public gamerScore = 0;
+  public compScore = 0;
+  private randomSquare: number | null = null;
   private successSquares: number[] = [];
   private expiredSquares: number[] = [];
-  public playerScore = 0;
-  public compScore = 0;
-  private gameInterval: NodeJS.Timer | undefined;
+  private gameInterval!: NodeJS.Timer;
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(
+    private cd: ChangeDetectorRef,
+    public dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
 
   }
 
-  public startGame() {
+  public startGame(): void {
     this.isStarted = true;
     this.gameInterval = setInterval(() => {
       if (this.randomSquare) {
@@ -33,7 +38,7 @@ export class AppComponent implements OnInit {
       this.randomSquare = this.getRandomNumber(0, this.squares.length - 1);
       this.checkScore();
       this.cd.detectChanges();
-    }, 500);
+    }, 1000);
   }
 
   private getRandomNumber(min: number, max: number): number {
@@ -41,16 +46,6 @@ export class AppComponent implements OnInit {
   }
 
   public checkItemStatus(indexOfItem: number): SQUARE_STATUS {
-    // if (this.randomSquare === indexOfItem) {
-    //   return SQUARE_STATUS.ACTIVE;
-    // } else if (this.expiredSquares.includes(indexOfItem)) {
-    //   return SQUARE_STATUS.EXPIRED;
-    // } else if (this.successSquares.includes(indexOfItem)) {
-    //   // this.successSquares.push(indexOfItem);
-    //   return SQUARE_STATUS.SUCCESS;
-    // }
-    // return SQUARE_STATUS.DEFAULT;
-
     switch (true) {
       case this.randomSquare === indexOfItem:
         return SQUARE_STATUS.ACTIVE;
@@ -70,26 +65,40 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private checkScore() {
-    this.playerScore = this.successSquares.length;
+  private checkScore(): void {
+    this.gamerScore = this.successSquares.length;
     this.compScore = this.expiredSquares.length;
-    if (this.playerScore >= 10 || this.compScore >= 10) {
+    if (this.gamerScore >= 10 || this.compScore >= 10) {
+      this.openDialog();
       this.stopGame();
       this.clearSquares();
-      // open window
-      // this.openWindow();
+      this.clearScore();
     }
   }
 
-  private stopGame() {
+  private openDialog(): void {
+    this.dialog.open(ScoreComponent, {
+      data: {
+        gamer: this.gamerScore,
+        comp: this.compScore
+      }
+    });
+  }
+
+  private stopGame(): void {
     clearInterval(this.gameInterval);
     this.isStarted = false;
   }
 
-  private clearSquares() {
+  private clearSquares(): void {
     this.randomSquare = null;
     this.successSquares = [];
     this.expiredSquares = [];
+  }
+
+  private clearScore(): void {
+    this.compScore = 0;
+    this.gamerScore = 0;
   }
 
 }

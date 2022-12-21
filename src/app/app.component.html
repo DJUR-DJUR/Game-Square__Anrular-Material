@@ -1,21 +1,22 @@
 <div class="container">
-  <button
-    class="btn"
+  <a class="start"
     (click)="startGame()"
-    [disabled]="isStarted"
-  >
-    START
-  </button>
+    [class.disabled]="isStarted">
+    Почати
+  </a>
   <div class="wrap">
     <ng-container *ngFor="let item of squares; index as indexOfItem">
       <app-square
         [status]="checkItemStatus(indexOfItem)"
-        (click)="onItemClick(indexOfItem)"
-      >
+        (click)="onItemClick(indexOfItem)">
       </app-square>
     </ng-container>
   </div>
   <div class="score">
-    {{playerScore}} / {{compScore}}
+    <h3>Гравець</h3>
+    <div class="primary">
+      {{gamerScore}} / {{compScore}}
+    </div>
+    <h3>Комп'ютер</h3>
   </div>
 </div>
