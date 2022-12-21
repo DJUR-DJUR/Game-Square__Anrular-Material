@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { SQUARE_STATUS } from './constants';
 import { ScoreComponent } from './score/score.component';
@@ -12,6 +13,7 @@ import { ScoreComponent } from './score/score.component';
 export class AppComponent implements OnInit {
 
   public squares = new Array(100);
+  public gameSpeed!: FormControl;
   public isStarted = false;
   public gamerScore = 0;
   public compScore = 0;
@@ -26,11 +28,12 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
+    this.gameSpeed = new FormControl(1000);
   }
 
   public startGame(): void {
     this.isStarted = true;
+    this.gameSpeed.disable();
     this.gameInterval = setInterval(() => {
       if (this.randomSquare) {
         this.expiredSquares.push(this.randomSquare);
@@ -38,7 +41,7 @@ export class AppComponent implements OnInit {
       this.randomSquare = this.getRandomNumber(0, this.squares.length - 1);
       this.checkScore();
       this.cd.detectChanges();
-    }, 1000);
+    }, this.gameSpeed.value);
   }
 
   private getRandomNumber(min: number, max: number): number {
@@ -88,6 +91,7 @@ export class AppComponent implements OnInit {
   private stopGame(): void {
     clearInterval(this.gameInterval);
     this.isStarted = false;
+    this.gameSpeed.enable();
   }
 
   private clearSquares(): void {

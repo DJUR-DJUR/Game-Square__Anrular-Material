@@ -1,9 +1,15 @@
 <div class="container">
-  <a class="start"
+  <div class="header">
+    <a class="start"
     (click)="startGame()"
     [class.disabled]="isStarted">
-    Почати
-  </a>
+      Почати
+    </a>
+    <input
+      class="form-control"
+      [formControl]="gameSpeed"
+      type="text">
+  </div>
   <div class="wrap">
     <ng-container *ngFor="let item of squares; index as indexOfItem">
       <app-square

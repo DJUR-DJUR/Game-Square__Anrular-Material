@@ -5,6 +5,14 @@
   align-items: center;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
 .wrap {
   display: flex;
   justify-content: center;
@@ -38,5 +46,17 @@ a {
 
 .start {
   font-size: 2rem;
-  margin-bottom: 1rem;
+}
+
+input {
+  border: none;
+  outline: 0;
+  outline-offset: 0;
+  width: 20%;
+}
+
+input[type="text"] {
+  padding-left: .5rem;
+  font-size: 18px;
+  height: 1.5rem;
 }
