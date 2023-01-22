@@ -12,7 +12,10 @@ import { ScoreComponent } from './score/score.component';
 })
 export class AppComponent implements OnInit {
 
-  public squares = new Array(100);
+  private readonly NUMBER_OF_SQUARES = 100;
+  private readonly GAME_SPEED = 1000;
+
+  public squares = new Array(this.NUMBER_OF_SQUARES);
   public gameSpeed!: FormControl;
   public isStarted = false;
   public gamerScore = 0;
@@ -24,11 +27,11 @@ export class AppComponent implements OnInit {
 
   constructor(
     private cd: ChangeDetectorRef,
-    public dialog: MatDialog,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
-    this.gameSpeed = new FormControl(1000);
+    this.gameSpeed = new FormControl(this.GAME_SPEED);
   }
 
   public startGame(): void {
@@ -43,10 +46,6 @@ export class AppComponent implements OnInit {
       this.checkScore();
       this.cd.detectChanges();
     }, this.gameSpeed.value);
-  }
-
-  private getRandomNumber(min: number, max: number): number {
-    return Math.round(Math.random() * (max - min) + min)
   }
 
   public checkItemStatus(indexOfItem: number): SQUARE_STATUS {
@@ -67,6 +66,10 @@ export class AppComponent implements OnInit {
       this.successSquares.push(indexOfItem);
       this.randomSquare = null;
     }
+  }
+
+  private getRandomNumber(min: number, max: number): number {
+    return Math.round(Math.random() * (max - min) + min)
   }
 
   private checkScore(): void {

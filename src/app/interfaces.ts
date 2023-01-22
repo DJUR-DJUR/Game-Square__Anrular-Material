@@ -1,4 +1,4 @@
 export interface Score {
-  gamer: number,
-  comp: number
+  readonly gamer: number,
+  readonly comp: number
 }
